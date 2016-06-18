@@ -4,15 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText txtres;
+    private TextView txtres;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        txtres = (EditText) findViewById(R.id.txtres);
-        //txtres.setText("");
         setContentView(R.layout.activity_main);
+        txtres = (TextView)findViewById(R.id.txtres);
         findViewById(R.id.btncambio).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnmodulo).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btndivision).setOnClickListener((View.OnClickListener) this);
@@ -43,48 +43,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnmodulo:
                 agregaString("%");
+                habilitaSignos(false);
                 break;
             case R.id.btndivision:
                 agregaString("/");
+                habilitaSignos(false);
                 break;
             case R.id.btnmultiplicacion:
                 agregaString("*");
+                habilitaSignos(false);
                 break;
             case R.id.btnresta:
                 agregaString("-");
+                habilitaSignos(false);
                 break;
             case R.id.btnsuma:
                 agregaString("+");
+                habilitaSignos(false);
                 break;
             case R.id.btn9:
                 agregaString("9");
+                habilitaSignos(true);
                 break;
             case R.id.btn8:
                 agregaString("8");
+                habilitaSignos(true);
                 break;
             case R.id.btn7:
                 agregaString("7");
+                habilitaSignos(true);
                 break;
             case R.id.btn6:
                 agregaString("6");
+                habilitaSignos(true);
                 break;
             case R.id.btn5:
                 agregaString("5");
+                habilitaSignos(true);
                 break;
             case R.id.btn4:
                 agregaString("4");
+                habilitaSignos(true);
                 break;
             case R.id.btn3:
                 agregaString("3");
+                habilitaSignos(true);
                 break;
             case R.id.btn2:
                 agregaString("2");
+                habilitaSignos(true);
                 break;
             case R.id.btn1:
                 agregaString("1");
+                habilitaSignos(true);
                 break;
             case R.id.btn0:
                 agregaString("0");
+                habilitaSignos(true);
                 break;
             case R.id.btnpunto:
                 agregaString(".");
@@ -97,7 +112,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void agregaString(String cadena) {
-        //txtres.setText(txtres.getText()+cadena);
+        txtres.setText(txtres.getText()+cadena);
+    }
+
+    private void habilitaSignos(Boolean valor){
+        findViewById(R.id.btnmodulo).setEnabled(valor);
+        findViewById(R.id.btndivision).setEnabled(valor);
+        findViewById(R.id.btnmultiplicacion).setEnabled(valor);
+        findViewById(R.id.btnresta).setEnabled(valor);
+        findViewById(R.id.btnsuma).setEnabled(valor);
     }
 
 }
