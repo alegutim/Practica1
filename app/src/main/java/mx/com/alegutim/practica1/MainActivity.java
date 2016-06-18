@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText txtres;
+    private EditText txtres;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        txtres = (EditText) findViewById(R.id.txtres);
+        txtres = (EditText)  findViewById(R.id.txtres);
         //txtres.setText("");
         setContentView(R.layout.activity_main);
         findViewById(R.id.btncambio).setOnClickListener((View.OnClickListener) this);
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn0).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnpunto).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnintro).setOnClickListener((View.OnClickListener) this);
+        //txtres.setText("hola");
 
 
     }
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void agregaString(String cadena) {
-        //txtres.setText(txtres.getText()+cadena);
+        txtres.setText(txtres.getText()+cadena);
     }
 
 }
