@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btncambio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Creacion de los objetos a nivel logico
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txtres = (TextView)findViewById(R.id.txtres);
@@ -38,7 +41,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btnpunto).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnborrar).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnintro).setOnClickListener((View.OnClickListener) this);
-        habilitaSignos(false);
+        //habilitaSignos(false);
+        // borrar todo el resultado con un onlong clic
+        findViewById(R.id.btnborrar).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                txtres.setText("");
+                return false;
+            }
+        });
 
 
     }
@@ -121,36 +132,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+    // agrega un caracter a la cadena
     private void agregaString(String cadena) {
         txtres.setText(txtres.getText()+cadena);
     }
 
+    // elimina el ultimo caracter de la cadena
     private void  quitarString() {
+
         if (txtres.getText().length()>0) {
             txtres.setText(txtres.getText().toString().substring(0, txtres.getText().length() - 1));
         }
     }
 
+    // habilita y dehabilita signos
     private void habilitaSignos(Boolean valor){
-        if (btncambio.getText().equals("Binaria") ) {
             findViewById(R.id.btnmodulo).setEnabled(valor);
             findViewById(R.id.btndivision).setEnabled(valor);
             findViewById(R.id.btnmultiplicacion).setEnabled(valor);
             findViewById(R.id.btnresta).setEnabled(valor);
             findViewById(R.id.btnsuma).setEnabled(valor);
-        } else {
-            findViewById(R.id.btnresta).setEnabled(valor);
-            findViewById(R.id.btnsuma).setEnabled(valor);
-        }
+
 
     }
-
+    // habilita o habilita los botones dependiendo del tipo
     private void makeBinaria(){
         if (btncambio.getText().equals("Binaria") ){
-        findViewById(R.id.btnmodulo).setEnabled(false);
-        findViewById(R.id.btndivision).setEnabled(false);
-        findViewById(R.id.btnmultiplicacion).setEnabled(false);
+        findViewById(R.id.btnmodulo).setEnabled(true);
+        findViewById(R.id.btndivision).setEnabled(true);
+        findViewById(R.id.btnmultiplicacion).setEnabled(true);
         findViewById(R.id.btnresta).setEnabled(true);
         findViewById(R.id.btnsuma).setEnabled(true);
         findViewById(R.id.btn9).setEnabled(false);
@@ -188,22 +198,110 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // realizar las operaciones para mostrar el resultado
     protected void showResultado(){
         int txtlenght = txtres.getText().length();
         if (txtlenght>0) {
-            if (btncambio.getText().equals("Binaria")) {
-                String[] alnumeros ;
-                ArrayList alsignos = new ArrayList<>();
-                String operacionTotal = txtres.getText().toString();
-                String numero = "";
-                String solonumeros = operacionTotal.replace("+","_").replace("/","_").replace("-","_").replace("%","_").replace("*","_");
-                alnumeros = solonumeros.split("_");
+            try {
+                if (btncambio.getText().equals("Binaria")) {
+                    String[] alnumeros;
+                    ArrayList alsignos = new ArrayList();
+                    String[] signos;
 
+                    String operacionTotal = txtres.getText().toString();
+                    String solonumeros = operacionTotal.replace("+", "_").replace("/", "_").replace("-", "_").replace("%", "_").replace("*", "_");
+                    alnumeros = solonumeros.split("_");
+                    String solosignos = operacionTotal.replace("0", "_").replace("1", "_").replace("2", "_").replace("3", "_").replace("4", "_")
+                            .replace("5", "_").replace("6", "_").replace("7", "_").replace("8", "_").replace("9", "_").replace(".", "_");
+                    signos = solosignos.split("_");
+                    for (int a = 0; a < signos.length; a++) {
+                        if (!signos[a].isEmpty()) {
+                            alsignos.add(signos[a]);
+                        }
+                    }
+                    //int la = alnumeros.length;
+                    //int as = alsignos.size();
+                    //Log.d("CALCULADORA", String.valueOf(la));
+                    //Log.d("CALCULADORA",String.valueOf(as));
+                    if (alsignos.size() == 1) {
+                        Double resultado = 0.0;
+                        switch (alsignos.get(0).toString()) {
+                            case "/":
+                                resultado = Double.valueOf(alnumeros[0]) / Double.valueOf(alnumeros[0]);
+                                break;
+                            case "*":
+                                resultado = Double.valueOf(alnumeros[0]) * Double.valueOf(alnumeros[0]);
+                                break;
+                            case "-":
+                                resultado = Double.valueOf(alnumeros[0]) - Double.valueOf(alnumeros[0]);
+                                break;
+                            case "+":
+                                resultado = Double.valueOf(alnumeros[0]) + Double.valueOf(alnumeros[0]);
+                                break;
+                            case "%":
+                                resultado = Double.valueOf(alnumeros[0]) % Double.valueOf(alnumeros[0]);
+                                break;
 
+                        }
+                        txtres.setText(resultado.toString());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unicamente se permite una operación", Toast.LENGTH_LONG).show();
+                        txtres.setText("");
+                    }
+                } else{
+                    // Todo binaria
+                    String[] alnumeros;
+                    ArrayList alsignos = new ArrayList();
+                    String[] signos;
+
+                    String operacionTotal = txtres.getText().toString();
+                    String solonumeros = operacionTotal.replace("+", "_").replace("/", "_").replace("-", "_").replace("%", "_").replace("*", "_");
+                    alnumeros = solonumeros.split("_");
+                    String solosignos = operacionTotal.replace("0", "_").replace("1", "_").replace("2", "_").replace("3", "_").replace("4", "_")
+                            .replace("5", "_").replace("6", "_").replace("7", "_").replace("8", "_").replace("9", "_").replace(".", "_");
+                    signos = solosignos.split("_");
+                    for (int a = 0; a < signos.length; a++) {
+                        if (!signos[a].isEmpty()) {
+                            alsignos.add(signos[a]);
+                        }
+                    }
+                    if (alsignos.size() == 1) {
+                        int resultado = 0;
+                        int numero1binario = Integer.parseInt(alnumeros[0],2);
+                        int numero2binario = Integer.parseInt(alnumeros[1],2);
+                        switch (alsignos.get(0).toString()) {
+                            case "/":
+                                resultado = numero1binario / numero2binario;
+                                break;
+                            case "*":
+                                resultado = numero1binario* numero2binario;
+                                break;
+                            case "-":
+                                resultado = numero1binario - numero2binario;
+                                break;
+                            case "+":
+                                resultado = numero1binario + numero2binario;
+                                break;
+                            case "%":
+                                resultado = numero1binario % numero2binario;
+                                break;
+
+                        }
+                        txtres.setText(Integer.toString(resultado,2));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unicamente se permite una operación", Toast.LENGTH_LONG).show();
+                        txtres.setText("");
+                    }
+                }
+            } catch ( Exception ex  ){
+                Toast.makeText(getApplicationContext(), "Operación invalida", Toast.LENGTH_LONG).show();
+                txtres.setText("");
             }
+
         }
     }
 
+    // valida si un string en numerico
     public boolean isNumeric(String s) {
         return s.matches("[-+]?\\d*\\.?\\d+");
     }
